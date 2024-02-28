@@ -25,6 +25,7 @@ client/*.ntvs*
 client/*.njsproj
 client/*.sln
 client/*.sw?
+node_modules/
 
 # C extensions
 *.so
@@ -145,3 +146,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+package.json
+pnpm-lock.yaml
