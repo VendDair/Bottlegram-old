@@ -19,7 +19,9 @@ def get_posts():
         descriptions = cursor.fetchall()
         cursor.execute("SELECT base64 from posts")
         base64 = cursor.fetchall()
-        return jsonify(titles=titles, descriptions=descriptions, base64=base64)
+        cursor.execute("SELECT id FROM posts")
+        ids = cursor.fetchall()
+        return jsonify(titles=titles, descriptions=descriptions, base64=base64, ids=ids)
     except:
         return "500"
 

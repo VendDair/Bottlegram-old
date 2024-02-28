@@ -2,11 +2,12 @@
   import NewPost from "./lib/New_post.svelte";
   import Post from "./lib/Post.svelte";
   import Error from "./lib/Error.svelte";
+  import {new_post} from "./store"
   import jQuery from "jquery";
   var base64 = ""
   var titles = ""
   var descriptions = ""
-  let new_post = false
+  var ids = ""
   jQuery(document).ready(function() {
     //const error = new Error({
     //  target: jQuery("main").get()[0],
@@ -20,6 +21,7 @@
           titles = response["titles"]
           descriptions = response["descriptions"]
           base64 = response["base64"]
+          ids = response["ids"]
         }
         else {
           new Error({
@@ -33,13 +35,14 @@
 
 
     jQuery(".new_post").on("click", function() { 
-      new_post = !new_post
+      new_post.update(value => !value)
+      //new_post = !new_post
     })
   })
 </script>
 
 <main>
-  {#if new_post}
+  {#if $new_post}
     <NewPost/>
   {/if}
   <div class="header">
@@ -48,7 +51,7 @@
   </div>
   <div class="posts">
     {#each titles as _, i}
-      <Post base64={base64[i]} title={titles[i]}/>
+      <Post base64={base64[i]} title={titles[i]} description={descriptions[i]} id={ids[i]}/>
     {/each}
   </div>
 
