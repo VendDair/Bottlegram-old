@@ -15,6 +15,8 @@ And svelte at the frontend side
 
 As database it uses sqlite3
 
+For generating random usernames it uses [this library](https://www.npmjs.com/package/random-words?activeTab=readme)
+
 ## Some Pictures of the app
 
 Main Page with posts
