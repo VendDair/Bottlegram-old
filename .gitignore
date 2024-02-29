@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-package.json
-pnpm-lock.yaml
+#package.json
+#pnpm-lock.yaml
 
 server/test.py

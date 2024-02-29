@@ -1,0 +1,8 @@
+{
+	"devDependencies": {
+		"sass": "^1.71.1"
+	},
+	"dependencies": {
+		"random-words": "^2.0.1"
+	}
+}
