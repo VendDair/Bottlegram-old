@@ -4,27 +4,9 @@ __pycache__/
 *$py.class
 
 # Logs
-client/logs
-client/*.log
-client/npm-debug.log*
-client/yarn-debug.log*
-client/yarn-error.log*
-client/pnpm-debug.log*
-client/lerna-debug.log*
 client/node_modules
 client/dist
-client/dist-ssr
-client/*.local
-client/# Editor directories and files
 client/.vscode/*
-client/!.vscode/extensions.json
-client/.idea
-client/.DS_Store
-client/*.suo
-client/*.ntvs*
-client/*.njsproj
-client/*.sln
-client/*.sw?
 node_modules/
 
 # C extensions
@@ -38,7 +20,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
