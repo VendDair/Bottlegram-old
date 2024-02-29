@@ -130,3 +130,5 @@ dmypy.json
 
 package.json
 pnpm-lock.yaml
+
+server/test.py
