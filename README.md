@@ -17,6 +17,13 @@ As database it uses sqlite3
 
 For generating random usernames it uses [this library](https://www.npmjs.com/package/random-words?activeTab=readme)
 
+## Links
+
+Here are two links with the demo\
+[First link](https://bottlegram.vercel.app/) and [the second](http://bottlegram.rf.gd)
+
+To use it you need to start the server by yourself on your pc
+
 ## Some Pictures of the app
 
 Main Page with posts
