@@ -11,16 +11,17 @@ CORS(app)
 @cross_origin
 @app.post("/new_comment")
 def new_comment():
-    #Accept {text: string, id: number}
+    #Accept {text: string, id: number, name: string}
     try:
         text = request.json["text"]
         id = request.json["id"]
+        name = request.json["name"]
         db = sql.connect("posts.db")
         cursor = db.cursor()
         cursor.execute("""
-        INSERT INTO comments (text, id)
-        VALUES (?, ?)
-        """, (text, id[0],))
+        INSERT INTO comments (text, id, name)
+        VALUES (?, ?, ?)
+        """, (text, id[0], name,))
         db.commit()
         cursor.close()
         db.close()
@@ -39,7 +40,7 @@ def get_comments():
         cursor = db.cursor()
 
         cursor.execute(f"""
-            SELECT id, text
+            SELECT id, text, name
             FROM comments
             WHERE id = ?
         """, (id, ))

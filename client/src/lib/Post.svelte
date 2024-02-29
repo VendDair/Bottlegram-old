@@ -3,7 +3,7 @@
   <p>{title}</p>
 
   <div class="full_info a{id}">
-    <img src={base64} alt="" id={id}>
+    <img src={base64} alt="">
     <div class="comments">
 
       <div class="description">
@@ -53,27 +53,32 @@
             data.forEach(bin => {
               new Comment({
                 target: jQuery("section[id='" + id + "']").get()[0],
-                props: {text: bin[1]}
+                props: {text: bin[1], name: bin[2]}
               })
             });
           }
         })
 
         let form_for_new_comment = jQuery(comments).find("form")[0]
+        let name = localStorage.getItem("name")
         jQuery(form_for_new_comment).on("submit", function(event) {
           event.preventDefault()
           let input_field = jQuery(form_for_new_comment).find("input")[0]
-          
+          console.log(input_field)
           jQuery.ajax({
             url: "http://127.0.0.1:5000/new_comment",
             type: "POST",
-            data: JSON.stringify({"text": jQuery(input_field).val(), "id": id}),
+            data: JSON.stringify({
+              "text": jQuery(input_field).val(), 
+              "id": id,
+              "name": name
+            }),
 
             contentType: "application/json",
             success: function(response) {
               new Comment({
                 target: jQuery("section[id='" + id + "']").get()[0],
-                props: {text: jQuery(input_field).val()}
+                props: {text: jQuery(input_field).val(), name: name}
               })
             }
           })
@@ -82,7 +87,7 @@
         })
 
         jQuery(comments).css("display", "flex")
-        let exit = img.parent()[1].lastChild
+        let exit = img.parent()[0].lastChild.lastChild
         jQuery(exit).on("click", function() {
           jQuery(comments).css("display", "none")
           jQuery("section[id='" + id + "']").empty()
