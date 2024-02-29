@@ -8,6 +8,46 @@ app = Flask(__name__)
 
 CORS(app)
 
+@cross_origin
+@app.post("/new_comment")
+def new_comment():
+    #Accept {text: string, id: number}
+    try:
+        text = request.json["text"]
+        id = request.json["id"]
+        db = sql.connect("posts.db")
+        cursor = db.cursor()
+        cursor.execute("""
+        INSERT INTO comments (text, id)
+        VALUES (?, ?)
+        """, (text, id[0],))
+        db.commit()
+        cursor.close()
+        db.close()
+        return "200"
+    except Exception as e:
+        print(e)
+        return "500"
+
+@app.post("/get_comments")
+def get_comments():
+    # Accept {id: number}
+    try:
+        id = request.json["id"][0]
+        print(id)
+        db = sql.connect("posts.db")
+        cursor = db.cursor()
+
+        cursor.execute(f"""
+            SELECT id, text
+            FROM comments
+            WHERE id = ?
+        """, (id, ))
+        data = cursor.fetchall()
+        return jsonify(data=data)
+    except:
+        return "500"
+
 @app.post("/get_posts")
 def get_posts():
     try:
