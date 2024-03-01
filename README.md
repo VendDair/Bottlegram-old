@@ -3,6 +3,15 @@
 Free "social media" platform without any accounts\
 The UI may not be that cool but it's free and open source
 
+## What can it do?
+You can make posts for other to see\
+Comment some other posts made by other people
+
+## What I want to add
+I want to add messaging function with personal encryption keys
+
+To chat you will need to write another username and the encryption key with that your messages will be encrypted
+
 ## Why I made this
 I made this app because I wanted to make a platform\
 that doesnt require you to make accounts and shit like this
