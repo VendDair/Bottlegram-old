@@ -24,6 +24,9 @@ Here are two links with the demo\
 
 To use it you need to start the server by yourself on your pc
 
+[Here](http://venddair.pythonanywhere.com) are the demo server to test the app\
+Just copy the link at paste in the app to test it
+
 ## Some Pictures of the app
 
 Main Page with posts
