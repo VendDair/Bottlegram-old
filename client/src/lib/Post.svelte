@@ -33,14 +33,14 @@
   import { new_post, url } from "../store"
   import Comment from "./Comment.svelte";
 
-  import jQuery, { data } from "jquery";
-    import Error from "./Error.svelte";
+  import jQuery from "jquery";
+  import Error from "./Error.svelte";
   jQuery(document).ready(function() {
     if ($new_post == false) {
       let img = jQuery('.post img[id="' + id + '"]')
       img.on("click", function(e) {
         let comments = img.parent().find("div")[0]
-        
+
         jQuery.ajax({
           //url: "http://127.0.0.1:5000/get_comments",
           url: $url + "get_comments",
@@ -61,6 +61,38 @@
             });
           }
         })
+
+
+
+
+
+
+        let repeat = setInterval(function() {
+          jQuery("section[id='" + id + "']").empty()
+          jQuery.ajax({
+            //url: "http://127.0.0.1:5000/get_comments",
+            url: $url + "get_comments",
+            type: "POST",
+            data: JSON.stringify({"id": id}),
+            contentType: "application/json",
+            headers: {
+                "accept": "application/json",
+                "Access-Control-Allow-Origin":"*"
+            },
+            success: function(response) {
+              let data = response["data"]
+              data.forEach(bin => {
+                new Comment({
+                  target: jQuery("section[id='" + id + "']").get()[0],
+                  props: {text: bin[0], name: bin[2]}
+                })
+              });
+            }
+          })
+
+        }, 3000)
+
+        
 
         let form_for_new_comment = jQuery(comments).find("form")[0]
         let name = localStorage.getItem("name")
@@ -112,7 +144,7 @@
         jQuery(exit).on("click", function() {
           jQuery(comments).css("display", "none")
           jQuery("section[id='" + id + "']").empty()
-  
+          clearInterval(repeat)
         })
         //alert(jQuery(e.target).attr("id"))
       })
