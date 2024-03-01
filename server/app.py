@@ -15,7 +15,7 @@ def new_comment():
         text = request.json["text"]
         id = request.json["id"]
         name = request.json["name"]
-        db = sql.connect("posts.db")
+        db = sql.connect("./posts.db")
         print(text)
         print(name)
         print(type(id))
@@ -36,7 +36,7 @@ def new_comment():
 def get_comments():
     # Accept {id: number}
     id = request.json["id"]
-    db = sql.connect("posts.db")
+    db = sql.connect("./posts.db")
     cursor = db.cursor()
 
     cursor.execute(f"""
@@ -70,7 +70,7 @@ def get_comments():
 @app.post("/get_posts")
 def get_posts():
     try:
-        db = sql.connect("posts.db")
+        db = sql.connect("./posts.db")
         cursor = db.cursor()
         cursor.execute("""
             SELECT *
@@ -113,7 +113,7 @@ def new_post():
         description = request.json["description"]
         base64 = request.json["base64"]
         name = request.json["name"]
-        db = sql.connect("posts.db")
+        db = sql.connect("./posts.db")
         cursor = db.cursor()
         cursor.execute("INSERT INTO posts (title, description, base64, name) VALUES (?, ?, ?, ?)", (title, description, base64, name,))
         db.commit()

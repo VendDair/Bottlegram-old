@@ -3,7 +3,7 @@
   import Post from "./Post.svelte";
   import Error from "./Error.svelte";
   import Name from "./Name.svelte";
-  import {new_post} from "../store"
+  import {new_post, url} from "../store"
   import jQuery from "jquery";
   var base64 = ""
   var titles = ""
@@ -16,7 +16,8 @@
     //  props: {text: "soss"}
     //})
     jQuery.ajax({
-      url: "http://127.0.0.1:5000/get_posts",
+      //url: "http://127.0.0.1:5000/get_posts",
+      url: $url + "/get_posts",
       type: "POST",
       success: function(response) {
         if (response != "500") {

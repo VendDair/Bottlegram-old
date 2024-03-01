@@ -2,6 +2,7 @@
   import jQuery from "jquery";
   import Error from "./Error.svelte";
   import Loading from "./Loading.svelte";
+  import {url} from "../store"
   
   jQuery(document).ready(function() {
 
@@ -40,7 +41,8 @@
         const base64 = e.target.result
 
         jQuery.ajax({
-          url: "http://127.0.0.1:5000/new_post",
+          url: $url + "/new_post",
+          //url: "http://127.0.0.1:5000/new_post",
           type: "POST",
           contentType: "application/json",
           data: JSON.stringify({

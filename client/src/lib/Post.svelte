@@ -30,7 +30,7 @@
   export let description
   export let id
   export let name
-  import { new_post } from "../store"
+  import { new_post, url } from "../store"
   import Comment from "./Comment.svelte";
 
   import jQuery, { data } from "jquery";
@@ -42,7 +42,8 @@
         let comments = img.parent().find("div")[0]
         
         jQuery.ajax({
-          url: "http://127.0.0.1:5000/get_comments",
+          //url: "http://127.0.0.1:5000/get_comments",
+          url: $url + "/get_comments",
           type: "POST",
           data: JSON.stringify({"id": id}),
           contentType: "application/json",
@@ -77,7 +78,8 @@
             return
           }
           jQuery.ajax({
-            url: "http://127.0.0.1:5000/new_comment",
+            //url: "http://127.0.0.1:5000/new_comment",
+            url: $url + "/new_comment",
             type: "POST",
             data: JSON.stringify({
               "text": jQuery(input_field).val(), 
