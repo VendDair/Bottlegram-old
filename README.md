@@ -40,8 +40,7 @@ Make new post page
 
 ## How to start it
 
-First of all we need an server\
-Now the app is working only on localhost but I'll fix it in near future
+First of all we need an server
 
 To start a server type:
 ```
@@ -57,5 +56,5 @@ npm install
 npm run dev
 ```
 
-I know I can build the client but I'll do it later
-
+After we launch the client launch it and paste the url for the server that we created\
+By default its [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
