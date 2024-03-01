@@ -7,7 +7,7 @@
     <div class="comments">
 
       <div class="description">
-        <p>{description}</p>
+        <p>{name}: {description}</p>
       </div>
 
       <section id={id}>
@@ -29,10 +29,12 @@
   export let title
   export let description
   export let id
+  export let name
   import { new_post } from "../store"
   import Comment from "./Comment.svelte";
 
   import jQuery, { data } from "jquery";
+    import Error from "./Error.svelte";
   jQuery(document).ready(function() {
     if ($new_post == false) {
       let img = jQuery('.post img[id="' + id + '"]')
@@ -53,7 +55,7 @@
             data.forEach(bin => {
               new Comment({
                 target: jQuery("section[id='" + id + "']").get()[0],
-                props: {text: bin[1], name: bin[2]}
+                props: {text: bin[0], name: bin[2]}
               })
             });
           }
@@ -64,7 +66,16 @@
         jQuery(form_for_new_comment).on("submit", function(event) {
           event.preventDefault()
           let input_field = jQuery(form_for_new_comment).find("input")[0]
-          console.log(input_field)
+          const text = jQuery(input_field).val()
+          const isWhitespaceString = str => !str.replace(/\s/g, '').length
+          
+          if (isWhitespaceString(text)) {
+            new Error({
+              target: jQuery("main").get()[0],
+              props: {text: "Enter the text"}
+            })
+            return
+          }
           jQuery.ajax({
             url: "http://127.0.0.1:5000/new_comment",
             type: "POST",
@@ -76,10 +87,18 @@
 
             contentType: "application/json",
             success: function(response) {
-              new Comment({
-                target: jQuery("section[id='" + id + "']").get()[0],
-                props: {text: jQuery(input_field).val(), name: name}
-              })
+              if (response != "500") {
+                new Comment({
+                  target: jQuery("section[id='" + id + "']").get()[0],
+                  props: {text: jQuery(input_field).val(), name: name}
+                })
+                jQuery(input_field).val("")
+              } else {
+                new Error({
+                  target: jQuery("main").get()[0],
+                  props: {text: "Try Again!"}
+                })
+              }
             }
           })
 

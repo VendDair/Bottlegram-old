@@ -4,14 +4,38 @@
   import Loading from "./Loading.svelte";
   
   jQuery(document).ready(function() {
+
     jQuery(".submit").on("click", function() {
       const file = jQuery(".image")[0].files[0]
-      
       const loading = new Loading({
         target: jQuery("main").get()[0]
       })
-
+      const isWhitespaceString = str => !str.replace(/\s/g, '').length
       const reader = new FileReader()
+      const name = localStorage.getItem("name")
+      const title = jQuery(".title").val()
+      const description = jQuery(".description").val()
+
+      // Checking for title and image
+      if (isWhitespaceString(title)) {
+        new Error({
+          target: jQuery("main").get()[0],
+          props: {text: "Enter an title"}
+        })
+        loading.$destroy()
+        return
+      }
+      if (file === undefined) {
+        new Error({
+          target: jQuery("main").get()[0],
+          props: {text: "Select an image"}
+        })
+        loading.$destroy()
+        return
+      }
+
+
+
       reader.onload = function(e) {
         const base64 = e.target.result
 
@@ -20,9 +44,10 @@
           type: "POST",
           contentType: "application/json",
           data: JSON.stringify({
-            "title": jQuery(".title").val(),
-            "description": jQuery(".description").val(),
-            "base64": base64
+            "title": title,
+            "description": description,
+            "base64": base64,
+            "name": name
           }),
           headers: {
               "accept": "application/json",

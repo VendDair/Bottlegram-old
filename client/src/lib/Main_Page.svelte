@@ -9,6 +9,7 @@
   var titles = ""
   var descriptions = ""
   var ids = ""
+  let names = ""
   jQuery(document).ready(function() {
     //const error = new Error({
     //  target: jQuery("main").get()[0],
@@ -23,6 +24,7 @@
           descriptions = response["descriptions"]
           base64 = response["base64"]
           ids = response["ids"]
+          names = response["names"]
         }
         else {
           new Error({
@@ -52,7 +54,7 @@
   </div>
   <div class="posts">
     {#each titles as _, i}
-      <Post base64={base64[i]} title={titles[i]} description={descriptions[i]} id={ids[i]}/>
+      <Post base64={base64[i]} title={titles[i]} description={descriptions[i]} id={ids[i]} name={names[i]}/>
     {/each}
   </div>
 
