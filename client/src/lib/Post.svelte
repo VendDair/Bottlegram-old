@@ -43,7 +43,7 @@
         
         jQuery.ajax({
           //url: "http://127.0.0.1:5000/get_comments",
-          url: $url + "/get_comments",
+          url: $url + "get_comments",
           type: "POST",
           data: JSON.stringify({"id": id}),
           contentType: "application/json",
@@ -79,7 +79,7 @@
           }
           jQuery.ajax({
             //url: "http://127.0.0.1:5000/new_comment",
-            url: $url + "/new_comment",
+            url: $url + "new_comment",
             type: "POST",
             data: JSON.stringify({
               "text": jQuery(input_field).val(), 
