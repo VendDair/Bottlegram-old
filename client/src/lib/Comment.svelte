@@ -20,6 +20,7 @@
       color: white;
       word-wrap: anywhere;
       padding: 0 10px;
+      font-size: calc(1vmin + .6pc);
     }
   }
 </style>

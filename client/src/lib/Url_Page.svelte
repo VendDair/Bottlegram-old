@@ -42,7 +42,7 @@
     height: 100vh;
     gap: 10px;
     input, button {
-      font-size: 25px;
+      font-size: 4vw;
     }
   }
 </style>

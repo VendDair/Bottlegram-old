@@ -153,10 +153,8 @@
 </script>
 
 <style lang="scss">
-  @use 'sass:math';
-  $width: math.div(100%, 4);
   .post {
-    width: $width;
+    width: 25dvw;
     height: auto;
     background-color: gray;
     border-radius: 10px;
@@ -176,7 +174,7 @@
       position: fixed;
       top: 2.5vh;
       left: 2.5vw;
-      width: 95vw;
+      width: 95dvw;
       height: 95dvh;
       border-radius: 10px;
       background-color: gray;
@@ -229,12 +227,12 @@
           border-radius: 0 0 10px 0;
           
           input {
-            width: 85%;
+            width: 80%;
           }
 
           input, button {
             padding: 5px;
-            font-size: 25px;
+            font-size: calc(1vw + 1vh);
             border-radius: 10px;
           }
 
@@ -262,7 +260,7 @@
 
     p {
       color: whitesmoke;
-      font-size: 25px;
+      font-size: calc(1vmin + 1pc);
     }
 
     img {
@@ -278,7 +276,8 @@
       .full_info {
         flex-direction: column;
         img {
-          max-width: 100%;
+          max-width: 60%;
+          max-height: 100%;
         }
         
         .comments {
