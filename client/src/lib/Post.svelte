@@ -156,7 +156,7 @@
   @use 'sass:math';
   $width: math.div(100%, 4);
   .post {
-    max-width: $width;
+    width: $width;
     height: auto;
     background-color: gray;
     border-radius: 10px;
@@ -177,7 +177,7 @@
       top: 2.5vh;
       left: 2.5vw;
       width: 95vw;
-      height: 95vh;
+      height: 95dvh;
       border-radius: 10px;
       background-color: gray;
       display: flex;
@@ -269,6 +269,31 @@
       margin-top: 5%;
       width: 90%;
       border-radius: 10px;
+    }
+  }
+  @media screen and (orientation:portrait) {
+    
+    .post {
+      width: 90vw;
+      .full_info {
+        flex-direction: column;
+        img {
+          max-width: 100%;
+        }
+        
+        .comments {
+          section {
+            max-height: 67.5%;
+          }
+          form {
+            width: 100%;
+            border-radius: 0 0 10px 10px;
+          }
+          width: 100%;
+          height: 60%;
+          border-radius: 10px 0 10px 10px;
+        }
+      }
     }
   }
 </style>

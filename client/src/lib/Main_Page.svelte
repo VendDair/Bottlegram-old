@@ -82,7 +82,7 @@
 
     .reset_url {
       position: absolute;
-      font-size: calc(1pc + .6vw);
+      font-size: calc(0.6vw + .6vh);
       left: 20vw;
       border-radius: 10px;
     }
@@ -94,9 +94,19 @@
     }
 
     .new_post {
-      font-size: calc(1pc + 1vw);
+      font-size: calc(1vw + 1vh);
       border-radius: 10px;
       z-index: 2;
+    } 
+  }
+  @media screen and (orientation:portrait) {
+    .posts {
+      flex-direction: column;
+      gap: 3vw;
+    }
+    .header {
+      padding: 2pc 0;
+      flex-direction: column;
     }
   }
   
