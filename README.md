@@ -29,7 +29,7 @@ For generating random usernames it uses [this library](https://www.npmjs.com/pac
 ## Links
 
 Here are two links with the demo\
-[First link](https://bottlegram.vercel.app/) and [the second](http://bottlegram.rf.gd)
+[First link](https://bottlegram.vercel.app/) and [the second](https://bottlegram.rf.gd/)
 
 To use it you need to start the server by yourself on your pc
 
