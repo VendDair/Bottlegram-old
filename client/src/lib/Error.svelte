@@ -18,7 +18,7 @@
 </script>
 
 <main class="{disapear ? 'disapear' : ''}">
-  {text}
+  <p>{text}</p>
 </main>
 
 <style lang="scss">
@@ -47,11 +47,22 @@
     top: -100px;
     font-family: "Tahoma", sans-serif;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transform: translateX(-50%);
     color: white;
-    padding: 10px 100px;
     animation: apear ease 1s alternate forwards;
     z-index: 100;
+    padding: 0 1dvw;
+    p {
+      text-align: center;
+    }
+  }
+  @media screen and (orientation:portrait) {
+    main {
+      width: 90dvw;
+    }
   }
 
 </style>
