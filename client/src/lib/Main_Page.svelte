@@ -36,8 +36,11 @@
       }
     })
 
-
-
+    jQuery(".reset_url").on("click", function() {
+      localStorage.removeItem("url")
+      location.reload()
+    })
+    
     jQuery(".new_post").on("click", function() { 
       new_post.update(value => !value)
     })
@@ -50,6 +53,7 @@
   {/if}
   <div class="header">
     <button class="new_post">New Post</button>
+    <button class="reset_url">Reset URL</button>
     <p>Bottlegram</p>
     <Name/>
   </div>
@@ -75,6 +79,13 @@
     align-items: center;
     background-color: black;
     padding: 0 2pc;
+
+    .reset_url {
+      position: absolute;
+      font-size: calc(1pc + .6vw);
+      left: 20vw;
+      border-radius: 10px;
+    }
 
     p {
       color: white;

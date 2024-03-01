@@ -4,11 +4,17 @@
   import MainPage from "./Main_Page.svelte";
 
   let is_url = false
+  if (localStorage.getItem("url") != undefined) {
+    url.set(localStorage.getItem("url"))
+    is_url = true
+  }
 
   jQuery(document).ready(function() {
     jQuery("form").on("submit", function(e) {
       e.preventDefault()
-      url.set(jQuery("input").val())
+      let input_value = jQuery("input").val()
+      url.set(input_value)
+      localStorage.setItem("url", input_value)
       is_url = true
     })
   })
