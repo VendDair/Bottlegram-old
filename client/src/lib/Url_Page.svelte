@@ -2,6 +2,7 @@
   import jQuery from "jquery";
   import {url} from "../store"
   import MainPage from "./Main_Page.svelte";
+    import Error from "./Error.svelte";
 
   let is_url = false
   if (localStorage.getItem("url") != undefined) {
@@ -15,6 +16,7 @@
       let input_value = jQuery("input").val()
       url.set(input_value)
       localStorage.setItem("url", input_value)
+      
       is_url = true
     })
   })

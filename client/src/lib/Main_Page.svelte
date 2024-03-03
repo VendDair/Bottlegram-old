@@ -3,6 +3,8 @@
   import Post from "./Post.svelte";
   import Error from "./Error.svelte";
   import Name from "./Name.svelte";
+  import MessagesPage from "./Messages_Page.svelte";
+  import Loading from "./Loading.svelte";
   import {new_post, url} from "../store"
   import jQuery from "jquery";
   var base64 = ""
@@ -15,24 +17,39 @@
     //  target: jQuery("main").get()[0],
     //  props: {text: "soss"}
     //})
+    const loading = new Loading({
+      target: jQuery(".Main_Page").get()[0]
+    })
     jQuery.ajax({
-      //url: "http://127.0.0.1:5000/get_posts",
-      url: $url + "get_posts",
+      url: $url + "init",
       type: "POST",
+      contentType: "application/json",
       success: function(response) {
-        if (response != "500") {
-          titles = response["titles"]
-          descriptions = response["descriptions"]
-          base64 = response["base64"]
-          ids = response["ids"]
-          names = response["names"]
+
+    
+      jQuery.ajax({
+        //url: "http://127.0.0.1:5000/get_posts",
+        url: $url + "get_posts",
+        type: "POST",
+        contentType: "application/json",
+        success: function(response) {
+          if (response != "500") {
+            loading.$destroy()
+            titles = response["titles"]
+            descriptions = response["descriptions"]
+            base64 = response["base64"]
+            ids = response["ids"]
+            names = response["names"]
+          }
+          else {
+            loading.$destroy()
+            new Error({
+              target: jQuery("main").get()[0],
+              props: {text: "Cannot read posts!"}
+            })
+          }
         }
-        else {
-          new Error({
-            target: jQuery("main").get()[0],
-            props: {text: "Cannot read posts!"}
-          })
-        }
+      })
       }
     })
 
@@ -43,6 +60,13 @@
     
     jQuery(".new_post").on("click", function() { 
       new_post.update(value => !value)
+    })
+
+    jQuery(".messages").on("click", function() {
+      jQuery(".Main_Page").remove()
+      new MessagesPage({
+        target: jQuery("body").get()[0]
+      })
     })
   })
 </script>
@@ -55,6 +79,7 @@
     <button class="new_post">New Post</button>
     <button class="reset_url">Reset URL</button>
     <p>Bottlegram</p>
+    <button class="messages">Messages</button>
     <Name/>
   </div>
   <div class="posts">
@@ -80,11 +105,16 @@
     background-color: black;
     padding: 0 2pc;
 
-    .reset_url {
-      position: absolute;
-      font-size: calc(0.6vw + .6vh);
-      left: 20vw;
+    button {
       border-radius: 10px;
+    }
+
+    .reset_url {
+      font-size: calc(0.2vw + 1pc);
+    }
+
+    .messages {
+      font-size: calc(0.2vw + 1pc);
     }
 
     p {
@@ -94,8 +124,7 @@
     }
 
     .new_post {
-      font-size: calc(1vw + 1vh);
-      border-radius: 10px;
+      font-size: calc(0.4vw + 1.2pc);
       z-index: 2;
     } 
   }
@@ -107,6 +136,11 @@
     .header {
       padding: 2pc 0;
       flex-direction: column;
+      gap: 10px;
+
+      p {
+        margin: 0;
+      }
     }
   }
   

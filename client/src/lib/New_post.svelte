@@ -3,6 +3,7 @@
   import Error from "./Error.svelte";
   import Loading from "./Loading.svelte";
   import {url} from "../store"
+  import { isWhitespaceString } from "../funcs";
   
   jQuery(document).ready(function() {
 
@@ -11,7 +12,6 @@
       const loading = new Loading({
         target: jQuery("main").get()[0]
       })
-      const isWhitespaceString = str => !str.replace(/\s/g, '').length
       const reader = new FileReader()
       const name = localStorage.getItem("name")
       const title = jQuery(".title").val()
@@ -92,11 +92,11 @@
 
 <style lang="scss">
   .font {
-    font-size: 20px;
+    font-size: 1pc;
   }
 
   .main {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     z-index: 1;
@@ -105,6 +105,7 @@
     align-items: center;
 
     .form {
+      max-width: 50%;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -114,7 +115,7 @@
 
     h2 {
       position: absolute;
-      top: 10px;
+      top: 5dvh;
       color: white;
       font-family: "Brush Script MT", cursive;
       font-size: 35px;

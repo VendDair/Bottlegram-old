@@ -31,6 +31,7 @@
   export let id
   export let name
   import { new_post, url } from "../store"
+  import { isWhitespaceString } from "../funcs"
   import Comment from "./Comment.svelte";
 
   import jQuery from "jquery";
@@ -40,6 +41,7 @@
       let img = jQuery('.post img[id="' + id + '"]')
       img.on("click", function(e) {
         let comments = img.parent().find("div")[0]
+        let amount = 0
 
         jQuery.ajax({
           //url: "http://127.0.0.1:5000/get_comments",
@@ -53,6 +55,7 @@
           },
           success: function(response) {
             let data = response["data"]
+            amount = data.length
             data.forEach(bin => {
               new Comment({
                 target: jQuery("section[id='" + id + "']").get()[0],
@@ -68,7 +71,6 @@
 
 
         let repeat = setInterval(function() {
-          jQuery("section[id='" + id + "']").empty()
           jQuery.ajax({
             //url: "http://127.0.0.1:5000/get_comments",
             url: $url + "get_comments",
@@ -81,16 +83,25 @@
             },
             success: function(response) {
               let data = response["data"]
-              data.forEach(bin => {
-                new Comment({
-                  target: jQuery("section[id='" + id + "']").get()[0],
-                  props: {text: bin[0], name: bin[2]}
+              let length = data.length
+              if (amount != length) {
+                data = data.slice(amount)
+                
+                amount = length
+                              
+                //jQuery("section[id='" + id + "']").empty()
+
+                data.forEach(bin => {
+                  new Comment({
+                    target: jQuery("section[id='" + id + "']").get()[0],
+                    props: {text: bin[0], name: bin[2]}
+                  })
                 })
-              });
+              }
             }
           })
 
-        }, 3000)
+        }, 1000)
 
         
 
@@ -100,7 +111,6 @@
           event.preventDefault()
           let input_field = jQuery(form_for_new_comment).find("input")[0]
           const text = jQuery(input_field).val()
-          const isWhitespaceString = str => !str.replace(/\s/g, '').length
           
           if (isWhitespaceString(text)) {
             new Error({
@@ -122,10 +132,10 @@
             contentType: "application/json",
             success: function(response) {
               if (response != "500") {
-                new Comment({
-                  target: jQuery("section[id='" + id + "']").get()[0],
-                  props: {text: jQuery(input_field).val(), name: name}
-                })
+                //new Comment({
+                //  target: jQuery("section[id='" + id + "']").get()[0],
+                //  props: {text: jQuery(input_field).val(), name: name}
+                //})
                 jQuery(input_field).val("")
               } else {
                 new Error({
@@ -252,9 +262,8 @@
       
       img {
         max-width: 40%;
-        max-height: 100%;
+        max-height: 90%;
         margin: auto;
-        transition: all .2s;
       }
     }
 
@@ -278,6 +287,7 @@
         img {
           max-width: 60%;
           max-height: 100%;
+          aspect-ratio: 1/1;
         }
         
         .comments {
