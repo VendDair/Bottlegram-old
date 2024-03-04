@@ -11,6 +11,8 @@ CORS(app)
 db: sql.Connection
 cursor: sql.Cursor
 
+
+
 @app.post("/init")
 def init():
     global db
@@ -23,6 +25,53 @@ def init():
     except Exception as e:
         print(e)
         return "500"
+
+@cross_origin
+@app.post("/get_names")
+def get_names():
+    # Accept {name: string}
+    # Return {names: list}
+    name = request.json["name"]
+    cursor.execute("""
+    SELECT *
+    FROM messages
+    WHERE name = ?;
+    """, (name,))
+    data = cursor.fetchall()
+
+    names = []
+    prev_name = ""
+
+    for message in data:
+        name = message[-1]
+        if prev_name != name and name not in names:
+            prev_name = name
+            names.append(name)
+    return jsonify(names=names)
+
+@cross_origin
+@app.post("/get_messages")
+def get_messages():
+    # Accept {name: string, sender: string}
+    # Return {sender: string, text: string}
+    name = request.json["name"]
+    sender = request.json["sender"]
+    cursor.execute("""
+    SELECT *
+    FROM messages
+    WHERE name = ? AND sender = ?
+    """, (name, sender,))
+
+    data = cursor.fetchall()
+    print(data)
+    sender = []
+    text = []
+    for message in data:
+        sender.append(message[-1])
+        text.append(message[0])
+    return jsonify({"sender": sender, "text": text})
+
+
 
 @app.post("/test")
 def test():
@@ -60,8 +109,6 @@ def set_name():
     try:
         name = request.json["name"]
         print(name)
-        #db = sql.connect("./posts.db")
-        #cursor = db.cursor()
         cursor.execute("""
             INSERT INTO names (name) VALUES (?)
         """, (name,))
@@ -189,3 +236,5 @@ def new_post():
         return "200"
     except:
         return "500"
+
+

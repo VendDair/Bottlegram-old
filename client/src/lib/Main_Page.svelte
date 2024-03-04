@@ -5,7 +5,7 @@
   import Name from "./Name.svelte";
   import MessagesPage from "./Messages_Page.svelte";
   import Loading from "./Loading.svelte";
-  import {new_post, url} from "../store"
+  import {new_post, url, init} from "../store"
   import jQuery from "jquery";
   var base64 = ""
   var titles = ""
@@ -20,13 +20,7 @@
     const loading = new Loading({
       target: jQuery(".Main_Page").get()[0]
     })
-    jQuery.ajax({
-      url: $url + "init",
-      type: "POST",
-      contentType: "application/json",
-      success: function(response) {
-
-    
+    function get_posts() {
       jQuery.ajax({
         //url: "http://127.0.0.1:5000/get_posts",
         url: $url + "get_posts",
@@ -50,8 +44,22 @@
           }
         }
       })
-      }
-    })
+    }
+    get_posts()
+    //if ($init != true) {
+    //  init.set(true)
+    //  jQuery.ajax({
+    //    url: $url + "init",
+    //    type: "POST",
+    //    contentType: "application/json",
+    //    success: function(response) {
+    //      get_posts()
+    //    }
+    //  })
+    //} else {
+    //  get_posts()
+    //}
+    
 
     jQuery(".reset_url").on("click", function() {
       localStorage.removeItem("url")
@@ -71,6 +79,7 @@
   })
 </script>
 
+  
 <main class="Main_Page">
   {#if $new_post}
     <NewPost/>
@@ -89,6 +98,7 @@
   </div>
 
 </main>
+
 
 <style lang="scss">
   .posts {

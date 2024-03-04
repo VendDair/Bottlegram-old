@@ -12,20 +12,25 @@
     })
     new_name = new_name.slice(0, -1)
     localStorage.setItem("name", new_name)
-    jQuery.ajax({
-      url: $url + "set_name",
-      type: "POST",
-      data: JSON.stringify({"name": new_name}),
-      contentType: "application/json",
-      success: function(response) {
-        if (response == "500") {
-          new Error({
-            target: jQuery(".Main_Page").get()[0],
-            props: {"text": "Cannot set username!"}
-          })
+    function set_name() {
+      jQuery.ajax({
+        url: $url + "set_name",
+        type: "POST",
+        data: JSON.stringify({"name": new_name}),
+        contentType: "application/json",
+        success: function(response) {
+          if (response == "500") {
+            set_name()
+            //new Error({
+            //  target: jQuery(".Main_Page").get()[0],
+            //  props: {"text": "Cannot set username!"}
+            //})
+          }
         }
-      }
-    })
+      })
+    }
+    set_name()
+    
   }
 </script>
 
