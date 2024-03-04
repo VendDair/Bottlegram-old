@@ -216,7 +216,7 @@
     align-items: center;
     flex-direction: column;
     margin: 1px;
-    transition: all .2s;
+    transition: background-color .2s;
 
     &:hover {
       border: 1px solid red;
