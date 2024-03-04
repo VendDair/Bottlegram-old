@@ -1,11 +1,30 @@
 <script>
   import MainPage from "./Main_Page.svelte";
   import Error from "./Error.svelte";
+  import MessagesName from "./Messages_name.svelte";
   import { isWhitespaceString } from "../funcs";
   import { url } from "../store"
   import jQuery from "jquery";
-
+  const name = localStorage.getItem("name")
   jQuery(document).ready(function() {
+    jQuery.ajax({
+      url: $url + "get_names",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({"name": name}),
+      success: function(response) {
+        let names = response["names"]
+        names.forEach(element => {
+          new MessagesName({
+            target: jQuery(".names").get()[0],
+            props: {"sender": element}
+          })
+        });
+      }
+    })
+
+
+
     jQuery(".back").on("click", function() {
       new MainPage({
         target: jQuery("#app").get()[0]
@@ -48,6 +67,7 @@
 
 <main class="Messages_Page">
   <div class="back">&lt</div>
+  <div class="names"></div>
   <form action="submit">
     <input type="text" class="name" placeholder="Enter the username">
     <input type="text" class="text" placeholder="Enter your text">
@@ -57,6 +77,15 @@
 
 
 <style lang="scss">
+  .names {
+    width: 100dvw;
+    height: 10vh;
+    background-color: rgb(20, 20, 20);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+  }
   .back {
     position: absolute;
     top: 10px;
