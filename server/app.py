@@ -36,6 +36,10 @@ def delete_post():
     DELETE FROM posts
     WHERE id = ?
     """, (id,))
+    cursor.execute("""
+    DELETE FROM comments
+    WHERE id = ?
+    """, (id,))
     db.commit()
     return "200"
 
