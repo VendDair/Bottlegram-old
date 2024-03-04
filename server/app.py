@@ -39,6 +39,21 @@ def delete_post():
     db.commit()
     return "200"
 
+@cross_origin
+@app.post("/delete_comment")
+def delete_comment():
+    # Accept {name: string, text: string, id_p: integer}
+    name = request.json["name"]
+    text = request.json["text"]
+    id_p = request.json["id_p"]
+    cursor.execute("""
+    DELETE FROM comments
+    WHERE name = ? AND text = ? AND id_p = ?
+
+    """, (name, text, id_p,))
+    db.commit()
+    return "200"
+
 
 @cross_origin
 @app.post("/get_names")

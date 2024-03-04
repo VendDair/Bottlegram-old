@@ -33,7 +33,7 @@
   export let description
   export let id
   export let name
-  import { new_post, url } from "../store"
+  import { new_post, url, comments_amount } from "../store"
   import { isWhitespaceString } from "../funcs"
   import Comment from "./Comment.svelte";
 
@@ -44,7 +44,8 @@
       let img = jQuery('.post img[id="' + id + '"]')
       img.on("click", function(e) {
         let comments = img.parent().find("div")[0]
-        let amount = 0
+        //let amount = 0
+        comments_amount.set(0)
 
         jQuery.ajax({
           //url: "http://127.0.0.1:5000/get_comments",
@@ -58,11 +59,12 @@
           },
           success: function(response) {
             let data = response["data"]
-            amount = data.length
+            comments_amount.set(data.length)
+            //amount = data.length
             data.forEach(bin => {
               new Comment({
                 target: jQuery("section[id='" + id + "']").get()[0],
-                props: {text: bin[0], name: bin[2]}
+                props: {text: bin[0], name: bin[2], id_p: bin[3]}
               })
             });
           }
@@ -87,20 +89,28 @@
             success: function(response) {
               let data = response["data"]
               let length = data.length
-              if (amount != length) {
-                data = data.slice(amount)
+              if ($comments_amount < length) {
+                data = data.slice($comments_amount)
                 
-                amount = length
+                comments_amount.set(length)
+                //amounat = length
                               
                 //jQuery("section[id='" + id + "']").empty()
-
+              
                 data.forEach(bin => {
                   new Comment({
                     target: jQuery("section[id='" + id + "']").get()[0],
-                    props: {text: bin[0], name: bin[2]}
+                    props: {text: bin[0], name: bin[2], id_p: bin[3]}
                   })
                 })
               }
+              //} else if (amount > length){
+              //  data = data.slice(0, amount);
+              //  let diference = amount - length
+              //  let container = jQuery("section[id='" + id + "']").get()[0]
+
+
+              //}
             }
           })
 
