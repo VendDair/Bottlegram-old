@@ -26,6 +26,20 @@ def init():
         print(e)
         return "500"
 
+
+@cross_origin
+@app.post("/delete_post")
+def delete_post():
+    # Accept {id: integer}
+    id = request.json["id"]
+    cursor.execute("""
+    DELETE FROM posts
+    WHERE id = ?
+    """, (id,))
+    db.commit()
+    return "200"
+
+
 @cross_origin
 @app.post("/get_names")
 def get_names():
@@ -91,8 +105,6 @@ def new_message():
     name = request.json["name"]
     sender = request.json["sender"]
     print(sender)
-    #db = sql.connect("./posts.db")
-    #cursor = db.cursor()
     cursor.execute("""
     INSERT INTO messages (text, name, sender)
     VALUES (?, ?, ?)

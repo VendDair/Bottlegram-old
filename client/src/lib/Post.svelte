@@ -20,6 +20,9 @@
       </form>
 
     </div>
+    {#if name == localStorage.getItem("name")}
+      <div class="delete">x</div>
+    {/if}
     <div class="exit">&lt</div>
   </div>
 </main>
@@ -34,7 +37,7 @@
   import { isWhitespaceString } from "../funcs"
   import Comment from "./Comment.svelte";
 
-  import jQuery from "jquery";
+  import jQuery, { queue } from "jquery";
   import Error from "./Error.svelte";
   jQuery(document).ready(function() {
     if ($new_post == false) {
@@ -157,6 +160,23 @@
           clearInterval(repeat)
         })
         //alert(jQuery(e.target).attr("id"))
+
+        if (name == localStorage.getItem("name")) {
+          let delete_btn = jQuery(img.parent()[0].lastChild).find(".delete")
+          delete_btn.on("click", function() {
+            console.log(id)
+
+            jQuery.ajax({
+              url: $url + "delete_post",
+              type: "POST",
+              data: JSON.stringify({"id": id}),
+              contentType: "application/json",
+              success: function(response) {
+                location.reload()
+              }
+            })
+          })
+        }
       })
     }   
   })
@@ -207,6 +227,22 @@
           color: white;
           background-color: black;
           border: 1px solid white;
+        }
+      }
+      .delete {
+        position: absolute;
+        top: 10px;
+        left: 50px;
+        border-radius: 100%;
+        background-color: red;
+        padding: 5px 10px;
+        transition: all .2s;
+        &:hover {
+          cursor: pointer;
+          color: red;
+          background-color: black;
+          border: 1px solid red;
+
         }
       }
 
