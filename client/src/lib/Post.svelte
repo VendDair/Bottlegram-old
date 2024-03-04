@@ -89,21 +89,35 @@
             success: function(response) {
               let data = response["data"]
               let length = data.length
-              if ($comments_amount < length) {
-                data = data.slice($comments_amount)
-                
-                comments_amount.set(length)
-                //amounat = length
-                              
-                //jQuery("section[id='" + id + "']").empty()
-              
-                data.forEach(bin => {
-                  new Comment({
-                    target: jQuery("section[id='" + id + "']").get()[0],
-                    props: {text: bin[0], name: bin[2], id_p: bin[3]}
-                  })
+              jQuery("section[id='" + id + "']").empty()
+              data.forEach(bin => {
+                new Comment({
+                  target: jQuery("section[id='" + id + "']").get()[0],
+                  props: {text: bin[0], name: bin[2], id_p: bin[3]}
                 })
-              }
+              })
+              //if ($comments_amount < length) {
+              //  data = data.slice($comments_amount)
+              //  
+              //  comments_amount.set(length)
+              //  //amounat = length
+              //                
+              //  //jQuery("section[id='" + id + "']").empty()
+              //
+              //  data.forEach(bin => {
+              //    new Comment({
+              //      target: jQuery("section[id='" + id + "']").get()[0],
+              //      props: {text: bin[0], name: bin[2], id_p: bin[3]}
+              //    })
+              //  })
+              //} else if ($comments_amount > length) {
+              //  jQuery("section[id='" + id + "']").empty()
+              //  data.forEach(bin => {
+              //    new Comment({
+              //      target: jQuery("section[id='" + id + "']").get()[0],
+              //      props: {text: bin[0], name: bin[2], id_p: bin[3]}
+              //    })
+              //  })}
               //} else if (amount > length){
               //  data = data.slice(0, amount);
               //  let diference = amount - length
