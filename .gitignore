@@ -9,6 +9,8 @@ client/dist
 client/.vscode/*
 node_modules/
 
+server/flask_session
+
 # C extensions
 *.so
 
