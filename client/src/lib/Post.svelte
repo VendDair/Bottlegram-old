@@ -20,7 +20,7 @@
       </form>
 
     </div>
-    {#if name == localStorage.getItem("name")}
+    {#if $name_temp == name}
       <div class="delete">x</div>
     {/if}
     <div class="exit">&lt</div>
@@ -33,16 +33,31 @@
   export let description
   export let id
   export let name
-  import { new_post, url, comments_amount } from "../store"
+  import { new_post, url, comments_amount, name_temp } from "../store"
   import { isWhitespaceString } from "../funcs"
   import Comment from "./Comment.svelte";
 
-  import jQuery, { queue } from "jquery";
+  import jQuery from "jquery";
   import Error from "./Error.svelte";
+
   jQuery(document).ready(function() {
     if ($new_post == false) {
       let img = jQuery('.post img[id="' + id + '"]')
       img.on("click", function(e) {
+        let uuid = localStorage.getItem("uuid")
+        jQuery.ajax({
+          url: $url + "get_name",
+          type: "POST",
+          data: JSON.stringify({"uuid": uuid}),
+          contentType: "application/json",
+          success: (response) => {
+            name_temp.set(response)
+            console.log($name_temp)
+          }
+        })
+
+
+
         let comments = img.parent().find("div")[0]
         //let amount = 0
         comments_amount.set(0)
@@ -96,35 +111,6 @@
                   props: {text: bin[0], name: bin[2], id_p: bin[3]}
                 })
               })
-              //if ($comments_amount < length) {
-              //  data = data.slice($comments_amount)
-              //  
-              //  comments_amount.set(length)
-              //  //amounat = length
-              //                
-              //  //jQuery("section[id='" + id + "']").empty()
-              //
-              //  data.forEach(bin => {
-              //    new Comment({
-              //      target: jQuery("section[id='" + id + "']").get()[0],
-              //      props: {text: bin[0], name: bin[2], id_p: bin[3]}
-              //    })
-              //  })
-              //} else if ($comments_amount > length) {
-              //  jQuery("section[id='" + id + "']").empty()
-              //  data.forEach(bin => {
-              //    new Comment({
-              //      target: jQuery("section[id='" + id + "']").get()[0],
-              //      props: {text: bin[0], name: bin[2], id_p: bin[3]}
-              //    })
-              //  })}
-              //} else if (amount > length){
-              //  data = data.slice(0, amount);
-              //  let diference = amount - length
-              //  let container = jQuery("section[id='" + id + "']").get()[0]
-
-
-              //}
             }
           })
 
@@ -133,7 +119,6 @@
         
 
         let form_for_new_comment = jQuery(comments).find("form")[0]
-        let name = localStorage.getItem("name")
         jQuery(form_for_new_comment).on("submit", function(event) {
           event.preventDefault()
           let input_field = jQuery(form_for_new_comment).find("input")[0]
@@ -153,7 +138,7 @@
             data: JSON.stringify({
               "text": jQuery(input_field).val(), 
               "id": id,
-              "name": name
+              "uuid": uuid
             }),
 
             contentType: "application/json",

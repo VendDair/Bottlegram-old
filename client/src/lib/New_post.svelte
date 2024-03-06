@@ -13,7 +13,7 @@
         target: jQuery("main").get()[0]
       })
       const reader = new FileReader()
-      const name = localStorage.getItem("name")
+      const uuid = localStorage.getItem("uuid")
       const title = jQuery(".title").val()
       const description = jQuery(".description").val()
 
@@ -49,7 +49,7 @@
             "title": title,
             "description": description,
             "base64": base64,
-            "name": name
+            "uuid": uuid
           }),
           headers: {
               "accept": "application/json",

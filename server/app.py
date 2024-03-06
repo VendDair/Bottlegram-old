@@ -196,6 +196,14 @@ def new_message():
     return "200"
 
 @cross_origin
+@app.post("/get_name")
+def compare_name():
+    # Accept {uuid: string}
+    uuid = request.json["uuid"]
+    return get_name(uuid)
+
+
+@cross_origin
 @app.post("/check_name")
 def check_name():
     # Accept {uuid: string}
@@ -232,7 +240,8 @@ def new_comment():
     try:
         text = request.json["text"]
         id = request.json["id"]
-        name = request.json["name"]
+        uuid = request.json["uuid"]
+        name = get_name(uuid)
 
         print(text)
         print(name)
@@ -289,12 +298,13 @@ def get_posts():
 @cross_origin
 @app.post("/new_post")
 def new_post():
-    # {"title": "title", "description": "desc", "base64": "encoded image in base64", "name": string}
+    # {"title": "title", "description": "desc", "base64": "encoded image in base64", "uuid": string}
     try: 
         title = request.json["title"]
         description = request.json["description"]
         base64 = request.json["base64"]
-        name = request.json["name"]
+        uuid = request.json["uuid"]
+        name = get_name(uuid)
         #db = sql.connect("./posts.db")
         #cursor = db.cursor()
         cursor.execute("INSERT INTO posts (title, description, base64, name) VALUES (?, ?, ?, ?)", (title, description, base64, name,))

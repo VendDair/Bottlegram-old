@@ -3,7 +3,7 @@
   export let name
   export let id_p
   import jQuery from "jquery";
-  import { url, comments_amount } from "../store";
+  import { url, comments_amount, name_temp } from "../store";
   import { get_current_component } from "svelte/internal";
   const component = get_current_component()
   
@@ -26,7 +26,7 @@
 </script>
 
 <div class="container">
-  {#if name == localStorage.getItem("name")}
+  {#if $name_temp == name}
     <div class="delete" on:click={delete_comment}>x</div>
   {/if}
   <p>{name}: {text}</p>
