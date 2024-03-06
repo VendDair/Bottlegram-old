@@ -17,6 +17,24 @@ db: sql.Connection
 cursor: sql.Cursor
 
 
+def get_name(uuid: str):
+    cursor.execute("""
+    SELECT name
+    FROM names
+    WHERE uuid = ?
+    """, (uuid,))
+    return cursor.fetchone()[0]
+
+def name_not_exists(name: str):
+    cursor.execute("""
+    SELECT name
+    FROM names
+    WHERE name = ?
+    """, (name,))
+    row = cursor.fetchone()
+    if row:
+        return False
+    return True
 
 @app.post("/init")
 def init():
@@ -30,6 +48,7 @@ def init():
     except Exception as e:
         print(e)
         return "500"
+
 
 
 @cross_origin
@@ -67,9 +86,12 @@ def delete_comment():
 @cross_origin
 @app.post("/get_names")
 def get_names():
-    # Accept {name: string}
+    # Accept {uuid: string}
     # Return {names: list}
-    name = request.json["name"]
+    uuid = request.json["uuid"]
+    name = get_name(uuid)
+    print(name)
+    
     cursor.execute("""
     SELECT *
     FROM messages
@@ -90,10 +112,11 @@ def get_names():
 @cross_origin
 @app.post("/get_messages")
 def get_messages():
-    # Accept {name: string, sender: string}
+    # Accept {uuid: string, sender: string}
     # Return {sender: string, text: string}
-    name = request.json["name"]
+    uuid = request.json["uuid"]
     sender = request.json["sender"]
+    name = get_name(uuid)
     cursor.execute("""
     SELECT *
     FROM messages
@@ -124,10 +147,16 @@ def test():
 @cross_origin
 @app.post("/new_message")
 def new_message():
-    # Accept {text: string, name: string}
+    # Accept {text: string, name: string, uuid: string}
     text = request.json["text"]
     name = request.json["name"]
-    sender = request.json["sender"]
+    uuid = request.json["uuid"]
+
+    if name_not_exists(name):
+        return "name not found"
+
+
+    sender = get_name(uuid)
     print(sender)
     cursor.execute("""
     INSERT INTO messages (text, name, sender)
@@ -247,3 +276,4 @@ def new_post():
         return "500"
 
 
+init()

@@ -5,13 +5,13 @@
   import { isWhitespaceString } from "../funcs";
   import { url } from "../store"
   import jQuery from "jquery";
-  const name = localStorage.getItem("name")
+  const uuid = localStorage.getItem("uuid")
   jQuery(document).ready(function() {
     jQuery.ajax({
       url: $url + "get_names",
       type: "POST",
       contentType: "application/json",
-      data: JSON.stringify({"name": name}),
+      data: JSON.stringify({"uuid": uuid}),
       success: function(response) {
         let names = response["names"]
         names.forEach(element => {
@@ -29,6 +29,10 @@
       new MainPage({
         target: jQuery("#app").get()[0]
       })
+      if (localStorage.getItem("interval") != null) {
+        clearInterval(parseInt(localStorage.getItem("interval")))
+        localStorage.removeItem("interval")
+      }
       jQuery(".Messages_Page").remove()
     })
 
@@ -36,7 +40,6 @@
       e.preventDefault()
       let name = jQuery("form .name").val()
       let text = jQuery("form .text").val()
-      let sender = localStorage.getItem("name")
       if (isWhitespaceString(name)) {
         new Error({
           target: jQuery(".Messages_Page").get()[0],
@@ -49,7 +52,7 @@
       jQuery.ajax({
         url: $url + "new_message",
         type: "POST",
-        data: JSON.stringify({"text": text, "name": name, "sender": sender}),
+        data: JSON.stringify({"text": text, "name": name, "uuid": uuid}),
         contentType: "application/json",
         success: function(response) {
           if (response == "500") {
@@ -58,6 +61,11 @@
               props: {"text": "Cannot send message!"}
             })
             return
+          } else if (response == "name not found") {
+            new Error({
+              target: jQuery(".Messages_Page").get()[0],
+              props: {"text": "Enter a valid username!"}
+            })
           }
         }
       })
@@ -68,6 +76,7 @@
 <main class="Messages_Page">
   <div class="back">&lt</div>
   <div class="names"></div>
+  <div class="messages"></div>
   <form action="submit">
     <input type="text" class="name" placeholder="Enter the username">
     <input type="text" class="text" placeholder="Enter your text">
