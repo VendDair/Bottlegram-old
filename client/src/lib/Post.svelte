@@ -52,7 +52,6 @@
           contentType: "application/json",
           success: (response) => {
             name_temp.set(response)
-            console.log($name_temp)
           }
         })
 
@@ -170,7 +169,7 @@
         })
         //alert(jQuery(e.target).attr("id"))
 
-        if (name == localStorage.getItem("name")) {
+        if ($name_temp == name) {
           let delete_btn = jQuery(img.parent()[0].lastChild).find(".delete")
           delete_btn.on("click", function() {
             console.log(id)
