@@ -1,6 +1,7 @@
 <script>
   import MainPage from "./Main_Page.svelte";
   import Error from "./Error.svelte";
+  import Name from "./Name.svelte";
   import MessagesName from "./Messages_name.svelte";
   import { isWhitespaceString } from "../funcs";
   import { url } from "../store"
@@ -13,13 +14,13 @@
       contentType: "application/json",
       data: JSON.stringify({"uuid": uuid}),
       success: function(response) {
-        let names = response["names"]
-        names.forEach(element => {
+        console.log(response)
+        response["names"].forEach(name => {
           new MessagesName({
             target: jQuery(".names").get()[0],
-            props: {"sender": element}
+            props: {"name": name}
           })
-        });
+        })
       }
     })
 
@@ -38,12 +39,12 @@
 
     jQuery("form").on("submit", function(e) {
       e.preventDefault()
-      let name = jQuery("form .name").val()
+      let name = localStorage.getItem("name")
       let text = jQuery("form .text").val()
       if (isWhitespaceString(name)) {
         new Error({
           target: jQuery(".Messages_Page").get()[0],
-          props: {"text": "Enter the username!"}
+          props: {"text": "Unable to get username!"}
         })
         return
       }
@@ -75,10 +76,12 @@
 
 <main class="Messages_Page">
   <div class="back">&lt</div>
-  <div class="names"></div>
-  <div class="messages"></div>
-  <form action="submit">
-    <input type="text" class="name" placeholder="Enter the username">
+  <div class="name"><Name/></div>
+  <div class="container">
+    <div class="names"></div>
+    <div class="messages"></div>
+  </div>
+    <form action="submit">
     <input type="text" class="text" placeholder="Enter your text">
     <button type="submit">Send</button>
   </form>
@@ -86,7 +89,22 @@
 
 
 <style lang="scss">
+  form {
+    position: fixed;
+    bottom: 10px;
+    left: 50vw;
+    transform: translateX(-50%);
+  }
   .names {
+    position: relative;
+    padding: 0;
+    height: 100dvh;
+    background-color: rgb(40, 40, 40);
+  }
+  .container  {
+    display: flex;
+  }
+  .name {
     width: 100dvw;
     height: 10vh;
     background-color: rgb(20, 20, 20);

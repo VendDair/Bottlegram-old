@@ -49,8 +49,6 @@ def init():
         print(e)
         return "500"
 
-
-
 @cross_origin
 @app.post("/delete_post")
 def delete_post():
@@ -88,26 +86,37 @@ def delete_comment():
 def get_names():
     # Accept {uuid: string}
     # Return {names: list}
+    names = []
     uuid = request.json["uuid"]
     name = get_name(uuid)
-    print(name)
-    
-    cursor.execute("""
-    SELECT *
-    FROM messages
-    WHERE name = ?;
-    """, (name,))
+    cursor.execute("SELECT name FROM names WHERE name != ?", (name,))
     data = cursor.fetchall()
-
-    names = []
-    prev_name = ""
-
-    for message in data:
-        name = message[-1]
-        if prev_name != name and name not in names:
-            prev_name = name
-            names.append(name)
+    for name in data:
+        names.append(name[0])
+    print(names)
     return jsonify(names=names)
+
+
+    #uuid = request.json["uuid"]
+    #Name = get_name(uuid)
+    #Print(name)
+    #
+    #Cursor.execute("""
+    #SELECT *
+    #FROM messages
+    #WHERE name = ?;
+    #""", (name,))
+    #Data = cursor.fetchall()
+
+    #Names = []
+    #Prev_name = ""
+
+    #For message in data:
+    #    name = message[-1]
+    #    if prev_name != name and name not in names:
+    #        prev_name = name
+    #        names.append(name)
+    #Return jsonify(names=names)
 
 @cross_origin
 @app.post("/get_messages")
@@ -120,27 +129,37 @@ def get_messages():
     cursor.execute("""
     SELECT *
     FROM messages
-    WHERE name = ? AND sender = ?
-    """, (name, sender,))
-
-    data = cursor.fetchall()
+    WHERE name = ? AND sender = ? OR name = ? AND sender = ?
+    """, (name, sender, sender, name,))
     sender_list = []
     text_list = []
-    for message in data:
+    for message in cursor.fetchall():
         sender_list.append(message[-1])
         text_list.append(message[0])
+    #cursor.execute("""
+    #SELECT *
+    #FROM messages
+    #WHERE name = ? AND sender = ?
+    #""", (name, sender,))
 
-    cursor.execute("""
-    SELECT *
-    FROM messages
-    WHERE name = ? AND sender = ?
-    """, (sender, name,))
+    #data = cursor.fetchall()
+    #sender_list = []
+    #text_list = []
+    #for message in data:
+    #    sender_list.append(message[-1])
+    #    text_list.append(message[0])
 
-    data = cursor.fetchall()
-    for message in data:
-        sender_list.append(message[-1])
-        text_list.append(message[0])
+    #cursor.execute("""
+    #SELECT *
+    #FROM messages
+    #WHERE name = ? AND sender = ?
+    #""", (sender, name,))
 
+    #data = cursor.fetchall()
+    #for message in data:
+    #    sender_list.append(message[-1])
+    #    text_list.append(message[0])
+    
     return jsonify({"sender": sender_list, "text": text_list})
 
 
