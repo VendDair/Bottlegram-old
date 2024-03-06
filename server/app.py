@@ -124,13 +124,24 @@ def get_messages():
     """, (name, sender,))
 
     data = cursor.fetchall()
-    print(data)
-    sender = []
-    text = []
+    sender_list = []
+    text_list = []
     for message in data:
-        sender.append(message[-1])
-        text.append(message[0])
-    return jsonify({"sender": sender, "text": text})
+        sender_list.append(message[-1])
+        text_list.append(message[0])
+
+    cursor.execute("""
+    SELECT *
+    FROM messages
+    WHERE name = ? AND sender = ?
+    """, (sender, name,))
+
+    data = cursor.fetchall()
+    for message in data:
+        sender_list.append(message[-1])
+        text_list.append(message[0])
+
+    return jsonify({"sender": sender_list, "text": text_list})
 
 
 
