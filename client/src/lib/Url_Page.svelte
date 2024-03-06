@@ -9,6 +9,12 @@
     url.set(localStorage.getItem("url"))
     is_url = true
   }
+  
+  function set_main_server() {
+    url.set("https://venddair.pythonanywhere.com/")
+    localStorage.setItem("url", $url)
+    is_url = true
+  }
 
   jQuery(document).ready(function() {
     jQuery("form").on("submit", function(e) {
@@ -23,7 +29,8 @@
 </script>
 
 {#if !is_url}
-  
+
+  <button on:click={set_main_server} class="main_server">Main Server</button>
 <form action="submit">
   <input type="text" placeholder="Enter the servel url">
   <button type="submit">Enter</button>
@@ -37,6 +44,12 @@
 </form> -->
 
 <style lang="scss">
+  .main_server {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
   form {
     display: flex;
     justify-content: center;
