@@ -3,8 +3,8 @@
   import Error from "./Error.svelte";
   import Name from "./Name.svelte";
   import MessagesName from "./Messages_name.svelte";
-  import { isWhitespaceString } from "../funcs";
-  import { url } from "../store"
+  import { isWhitespaceString, encryptMessage } from "../funcs";
+  import { url, enc_key } from "../store"
   import jQuery from "jquery";
   const uuid = localStorage.getItem("uuid")
   jQuery(document).ready(function() {
@@ -39,9 +39,12 @@
 
     jQuery("form").on("submit", function(e) {
       e.preventDefault()
+
       let name = localStorage.getItem("name")
       let text = jQuery("form .text").val()
-      if (isWhitespaceString(name)) {
+      let enc_message = encryptMessage(text, $enc_key)
+
+      if (!localStorage.getItem("name") || isWhitespaceString(name)) {
         new Error({
           target: jQuery(".Messages_Page").get()[0],
           props: {"text": "Unable to get username!"}
@@ -53,7 +56,7 @@
       jQuery.ajax({
         url: $url + "new_message",
         type: "POST",
-        data: JSON.stringify({"text": text, "name": name, "uuid": uuid}),
+        data: JSON.stringify({"text": enc_message, "name": name, "uuid": uuid}),
         contentType: "application/json",
         success: function(response) {
           if (response == "500") {
@@ -82,6 +85,7 @@
     <div class="messages"></div>
   </div>
     <form action="submit">
+    <input type="password" class="enc_key" bind:value={$enc_key} placeholder="Enter the encryption key">
     <input type="text" class="text" placeholder="Enter your text">
     <button type="submit">Send</button>
   </form>

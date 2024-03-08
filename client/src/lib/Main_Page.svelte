@@ -17,6 +17,9 @@
     //  target: jQuery("main").get()[0],
     //  props: {text: "soss"}
     //})
+    if (localStorage.getItem("name")) {
+      localStorage.removeItem("name")
+    }
     const loading = new Loading({
       target: jQuery(".Main_Page").get()[0]
     })

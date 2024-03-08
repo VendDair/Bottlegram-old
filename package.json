@@ -3,6 +3,7 @@
 		"sass": "^1.71.1"
 	},
 	"dependencies": {
+		"crypto-js": "^4.2.0",
 		"random-words": "^2.0.1"
 	}
 }

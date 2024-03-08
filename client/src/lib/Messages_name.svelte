@@ -1,7 +1,8 @@
 <script>
   export let name
   import jQuery from "jquery";
-  import { url } from "../store";
+  import { url, enc_key } from "../store";
+  import { decryptMessage } from "../funcs"
   
   let uuid = localStorage.getItem("uuid")
   
@@ -17,7 +18,7 @@
         messages.empty()
         for (let i = 0; i < response["sender"].length; i++) {
           let p = jQuery("<p>")
-          p.text(response["sender"][i] + ": " + response["text"][i])
+          p.text(response["sender"][i] + ": " + decryptMessage(response["text"][i], $enc_key))
           messages.append(p)
         }
       }
